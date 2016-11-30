@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="DEV_HOME" value="/home/XXX/XXX/logs" />
+  <!-- std appender-->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <!-- 错误日志 appender  -->
+  <appender name="ERROR_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${DEV_HOME}/error.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${DEV_HOME}/error.%d{yyyy-MM-dd}.%i.log </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	<maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <!-- 日志最大的历史 20天 -->
+      <maxHistory>20</maxHistory>
+    </rollingPolicy>
+
+    <!-- deny all events with a level below WARN, that is TRACE, DEBUG and INFO -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+  </appender>
+
+
+  <!-- INFO appender-->
+  <appender name="INFO_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${DEV_HOME}/info.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern> %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n </Pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${DEV_HOME}/info.%d{yyyy-MM-dd}.%i.log
+      </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	<maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <!-- 日志最大的历史 10天 -->
+      <maxHistory>10</maxHistory>
+    </rollingPolicy>
+
+    <!-- 只打印INFO日志 -->
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+
+  <!-- DEBUG appender-->
+  <appender name="DEBUG_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${DEV_HOME}/debug.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern> %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n </Pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${DEV_HOME}/debug.%d{yyyy-MM-dd}.%i.log
+      </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	<maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <!-- 日志最大的历史 2天 -->
+      <maxHistory>2</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+
+  <!--日志打印的包的范围，及分类日志文件存储 -->
+  <!--<logger name="com.XX.XXX" additivity="false">-->
+  <!--<level value="DEBUG" />-->
+  <!--</logger>-->
+  <!--<logger name="com.XXX.XXX.XXX.aop.CacheInterceptor" level="DEBUG">-->
+  <!--</logger>-->
+
+  <root level="WARN">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="ERROR_APPENDER"/>
+    <appender-ref ref="INFO_APPENDER"/>
+    <appender-ref ref="DEBUG_APPENDER" />
+  </root>
+</configuration>
